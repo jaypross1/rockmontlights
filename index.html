@@ -192,24 +192,7 @@
   .flinks a { font-size: .73rem; color: #2d5a2d; text-decoration: none; transition: color .15s; }
   .flinks a:hover { color: var(--silver); }
 
-  /* ADMIN */
-  .fab { position: fixed; bottom: 24px; right: 24px; z-index: 300; display: flex; align-items: center; gap: 8px; background: var(--red); color: var(--white); border: none; border-radius: 10px; padding: 11px 18px; font-weight: 700; font-size: .83rem; cursor: pointer; box-shadow: 0 6px 24px rgba(220,38,38,.35); transition: background .15s; }
-  .fab:hover { background: var(--redl); }
-  .overlay { display: none; position: fixed; inset: 0; z-index: 400; background: rgba(3,8,3,.85); backdrop-filter: blur(10px); align-items: center; justify-content: center; }
-  .overlay.open { display: flex; }
-  .drawer { background: var(--deep); border: 1px solid var(--border); border-radius: 16px; padding: 36px; width: 90%; max-width: 500px; max-height: 92vh; overflow-y: auto; box-shadow: 0 32px 80px rgba(0,0,0,.6); }
-  .drawer h3 { font-size: 1.1rem; color: var(--white); margin-bottom: 4px; }
-  .drawer > p { font-size: .78rem; color: var(--silver); margin-bottom: 22px; }
-  .field { margin-bottom: 14px; }
-  .field label { display: block; font-size: .7rem; font-weight: 700; color: var(--silver); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 5px; }
-  .field input, .field textarea { width: 100%; background: rgba(255,255,255,.05); border: 1px solid var(--border); border-radius: 7px; padding: 9px 12px; font-size: .92rem; color: var(--white); resize: vertical; transition: border-color .15s; font-family: system-ui, sans-serif; }
-  .field input::placeholder, .field textarea::placeholder { color: #4a6a4a; }
-  .field input:focus, .field textarea:focus { outline: none; border-color: var(--green); }
-  .drawer-btns { display: flex; gap: 10px; margin-top: 20px; }
-  .btn-pub { background: var(--red); color: var(--white); flex: 1; font-weight: 800; border: none; border-radius: 9px; padding: 13px 24px; cursor: pointer; font-size: .88rem; transition: background .15s; }
-  .btn-pub:hover { background: var(--redl); }
-  .btn-cancel { background: var(--glass); color: var(--silver); border: 1px solid var(--border); border-radius: 9px; padding: 13px 24px; cursor: pointer; font-size: .88rem; font-weight: 700; transition: background .15s; }
-  .success { background: rgba(74,222,128,.1); border: 1px solid rgba(74,222,128,.3); color: var(--greenl); border-radius: 7px; padding: 10px 14px; font-size: .82rem; margin-bottom: 14px; display: none; }
+
 </style>
 </head>
 <body>
@@ -314,24 +297,7 @@
   </div>
 </footer>
 
-<button class="fab" onclick="openAdmin()">&#9998; &nbsp;New Post</button>
 
-<div class="overlay" id="overlay">
-  <div class="drawer">
-    <h3>Publish a Post</h3>
-    <p>In production this writes to your content.json and triggers a redeploy.</p>
-    <div class="success" id="successMsg">Post added to the grid.</div>
-    <div class="field"><label>Title</label><input type="text" id="pTitle" placeholder="Holiday Lights 2025"></div>
-    <div class="field"><label>Date</label><input type="text" id="pDate" placeholder="Dec 1, 2025"></div>
-    <div class="field"><label>Excerpt</label><textarea id="pExcerpt" rows="3" placeholder="Short summary..."></textarea></div>
-    <div class="field"><label>Image URL (optional)</label><input type="text" id="pImage" placeholder="https://..."></div>
-    <div class="field"><label>Link URL (optional)</label><input type="text" id="pLink" placeholder="https://..."></div>
-    <div class="drawer-btns">
-      <button class="btn-pub" onclick="publishPost()">Publish</button>
-      <button class="btn-cancel" onclick="closeAdmin()">Cancel</button>
-    </div>
-  </div>
-</div>
 
 <script>
 var D = {
@@ -401,26 +367,7 @@ function renderPosts() {
 }
 renderPosts();
 
-function openAdmin() { document.getElementById("overlay").classList.add("open"); }
-function closeAdmin() {
-  document.getElementById("overlay").classList.remove("open");
-  document.getElementById("successMsg").style.display = "none";
-}
-function publishPost() {
-  var t = document.getElementById("pTitle").value.trim();
-  var d = document.getElementById("pDate").value.trim();
-  var e = document.getElementById("pExcerpt").value.trim();
-  var i = document.getElementById("pImage").value.trim();
-  var l = document.getElementById("pLink").value.trim();
-  if (!t || !d || !e) { alert("Title, date, and excerpt are required."); return; }
-  D.posts.unshift({ title: t, date: d, excerpt: e, image: i || null, link: l || null });
-  renderPosts();
-  document.getElementById("successMsg").style.display = "block";
-  ["pTitle","pDate","pExcerpt","pImage","pLink"].forEach(function(id) { document.getElementById(id).value = ""; });
-}
-document.getElementById("overlay").addEventListener("click", function(e) {
-  if (e.target === document.getElementById("overlay")) closeAdmin();
-});
+
 </script>
 </body>
 </html>
