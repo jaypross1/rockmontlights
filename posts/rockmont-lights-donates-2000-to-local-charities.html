@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>These neighborhoods bring out the best in holiday lights – Rockmont Lights</title>
+<style>
+  :root {
+    --night:  #080f08;
+    --deep:   #0d1a0e;
+    --green:  #4ade80;
+    --greenl: #bbf7d0;
+    --silver: #cbd5e1;
+    --white:  #ffffff;
+    --border: rgba(134,163,134,.18);
+    --glass:  rgba(255,255,255,.05);
+    --red:    #dc2626;
+    --redl:   #f87171;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: system-ui, -apple-system, sans-serif; color: var(--white); background: var(--night); -webkit-font-smoothing: antialiased; }
+
+  /* NAV */
+  nav {
+    height: 62px; display: flex; align-items: center; justify-content: space-between;
+    padding: 0 40px; background: var(--deep); border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; z-index: 100;
+  }
+  .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .logo-mark { width: 32px; height: 32px; border-radius: 8px; background: linear-gradient(135deg, var(--green), #16a34a); display: grid; place-items: center; font-size: .95rem; }
+  .logo-text { font-weight: 700; font-size: .95rem; color: var(--white); }
+  .nav-back { font-size: .82rem; color: var(--silver); text-decoration: none; display: flex; align-items: center; gap: 6px; transition: color .15s; }
+  .nav-back:hover { color: var(--white); }
+
+  /* HERO IMAGE */
+  .post-hero {
+    width: 100%; height: 420px; overflow: hidden;
+    background: var(--deep);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .post-hero img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  /* ARTICLE */
+  .article-wrap { max-width: 720px; margin: 0 auto; padding: 60px 24px 100px; }
+  .post-meta { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+  .post-date { font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--green); }
+  .post-tag { font-size: .72rem; background: rgba(74,222,128,.1); border: 1px solid rgba(74,222,128,.25); color: var(--greenl); border-radius: 12px; padding: 2px 10px; }
+  h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); line-height: 1.15; letter-spacing: -.02em; color: var(--white); margin-bottom: 28px; }
+  .post-body { color: var(--silver); font-size: 1rem; line-height: 1.85; }
+  .post-body p { margin-bottom: 20px; }
+  .post-body h2 { font-size: 1.3rem; color: var(--white); margin: 36px 0 14px; letter-spacing: -.01em; }
+  .post-body img { width: 100%; border-radius: 10px; margin: 28px 0; }
+  .post-body a { color: var(--green); text-decoration: underline; text-underline-offset: 3px; }
+
+  /* BACK LINK */
+  .back-link {
+    display: inline-flex; align-items: center; gap: 7px; margin-top: 48px;
+    color: var(--green); font-size: .85rem; font-weight: 700; text-decoration: none;
+    transition: gap .15s;
+  }
+  .back-link:hover { gap: 11px; }
+
+  /* FOOTER */
+  footer { background: #030d03; border-top: 1px solid var(--border); padding: 24px 40px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+  .fl { font-size: .8rem; font-weight: 700; color: #2d5a2d; }
+  .flinks { display: flex; gap: 20px; }
+  .flinks a { font-size: .73rem; color: #2d5a2d; text-decoration: none; transition: color .15s; }
+  .flinks a:hover { color: var(--silver); }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../index.html" class="logo">
+    <div class="logo-mark">&#128161;</div>
+    <span class="logo-text">Rockmont Lights</span>
+  </a>
+  <a href="../index.html#posts" class="nav-back">&#8592; Back to Posts</a>
+</nav>
+
+<div class="post-hero">
+  <img src="https://jaypross1.github.io/rockmontlights/posts/hero_charities.jpg" alt="Joey's Food Locker Donation">
+</div>
+
+<div class="article-wrap">
+  <div class="post-meta">
+    <span class="post-date">Nov 21, 2023</span>
+    <span class="post-tag">Donations</span>
+  </div>
+
+  <h1>Rockmont Lights donates $2000 to local charities</h1>
+
+  <div class="post-body">
+    <p>On October 30, 2023, Rockmont Lights presented both Joey’s Food Locker and Angels of Mercy with $1000 to help support their missions over this holiday season to provide food and supplies to local Natomas residents in need. These donations were made possible through the generosity of those who came to enjoy the holiday lights around Rockmont Circle and Java Court. Thank you for enjoying the lights and helping to spread holiday cheer around Sacramento.</p>
+
+    <img src="https://jaypross1.github.io/rockmontlights/posts/angels_donation.jpg" alt="Angels of Mercy Donation">
+    
+  </div>
+
+  <a href="../index.html#posts" class="back-link">&#8592; Back to all posts</a>
+</div>
+
+<footer>
+  <span class="fl">&#128161; Rockmont Lights</span>
+  <div class="flinks">
+    <a href="mailto:info@rockmontlights.com">Contact</a>
+    <a href="https://account.venmo.com/u/rockmontlights" target="_blank">Donate</a>
+  </div>
+</footer>
+
+</body>
+</html>
