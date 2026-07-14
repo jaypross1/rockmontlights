@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rockmont Lights</title>
+<style>
+  :root {
+    --night:  #080f08;
+    --deep:   #0d1a0e;
+    --navy:   #112912;
+    --green:  #4ade80;
+    --greenl: #bbf7d0;
+    --silver: #cbd5e1;
+    --white:  #ffffff;
+    --border: rgba(134,163,134,.18);
+    --glass:  rgba(255,255,255,.05);
+    --glassh: rgba(255,255,255,.09);
+    --red:    #dc2626;
+    --redl:   #f87171;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: system-ui, -apple-system, sans-serif; color: var(--white); background: var(--night); -webkit-font-smoothing: antialiased; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+    height: 62px; display: flex; align-items: center; justify-content: space-between;
+    padding: 0 40px;
+    background: linear-gradient(180deg, rgba(8,15,8,.9) 0%, transparent 100%);
+    transition: background .3s, backdrop-filter .3s;
+  }
+  nav.scrolled {
+    background: rgba(8,15,8,.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .logo-mark {
+    width: 34px; height: 34px; border-radius: 8px;
+    background: linear-gradient(135deg, var(--green), #16a34a);
+    display: grid; place-items: center; font-size: 1rem; flex-shrink: 0;
+  }
+  .logo-text { font-weight: 700; font-size: .95rem; color: var(--white); }
+  nav ul { list-style: none; display: flex; align-items: center; gap: 2px; }
+  nav ul a {
+    font-size: .82rem; font-weight: 500; color: var(--silver);
+    text-decoration: none; padding: 6px 13px; border-radius: 6px;
+    transition: background .15s, color .15s;
+  }
+  nav ul a:hover { background: var(--glass); color: var(--white); }
+  .nav-cta { background: var(--red) !important; color: var(--white) !important; font-weight: 700 !important; }
+  .nav-cta:hover { background: var(--redl) !important; }
+
+  /* HERO */
+  .hero { position: relative; min-height: 100vh; display: flex; align-items: flex-end; overflow: hidden; }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(to bottom, rgba(8,15,8,.3) 0%, rgba(8,15,8,.1) 35%, rgba(8,15,8,.75) 70%, var(--night) 100%),
+      url('https://images.unsplash.com/photo-1543637005-4d639a4e16de?w=1600&q=80&auto=format&fit=crop') center/cover no-repeat;
+  }
+  .hero-bg::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 60% 40% at 50% 20%, rgba(74,222,128,.1) 0%, transparent 70%);
+    animation: shimmer 6s ease-in-out infinite alternate;
+  }
+  @keyframes shimmer { from { opacity: .5; } to { opacity: 1; } }
+  .hero-content {
+    position: relative; z-index: 2;
+    max-width: 1040px; margin: 0 auto; width: 100%;
+    padding: 0 40px 96px;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(74,222,128,.12); border: 1px solid rgba(74,222,128,.3);
+    color: var(--green); border-radius: 20px; padding: 5px 14px;
+    font-size: .72rem; font-weight: 700; letter-spacing: 1.2px;
+    text-transform: uppercase; margin-bottom: 22px;
+  }
+  .hero-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: blink 2s ease-in-out infinite; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+  .hero h1 { font-size: clamp(2.8rem, 6vw, 5rem); line-height: 1.06; letter-spacing: -.03em; color: var(--white); margin-bottom: 20px; text-shadow: 0 2px 40px rgba(0,0,0,.4); }
+  .hero h1 em { color: var(--redl); font-style: normal; }
+  .hero-sub { color: var(--silver); font-size: 1.05rem; line-height: 1.75; max-width: 520px; margin-bottom: 36px; }
+  .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn { display: inline-flex; align-items: center; gap: 7px; font-weight: 700; font-size: .88rem; padding: 13px 24px; border-radius: 9px; text-decoration: none; border: none; cursor: pointer; transition: all .18s; white-space: nowrap; }
+  .btn-red { background: var(--red); color: var(--white); }
+  .btn-red:hover { background: var(--redl); }
+  .btn-ghost { background: var(--glass); color: var(--silver); border: 1px solid var(--border); backdrop-filter: blur(8px); }
+  .btn-ghost:hover { background: var(--glassh); color: var(--white); }
+
+  /* STATS */
+  .stats-row { background: var(--deep); border-top: 1px solid var(--border); display: flex; justify-content: center; }
+  .stat { flex: 1; max-width: 240px; padding: 28px 24px; text-align: center; border-right: 1px solid var(--border); }
+  .stat:last-child { border-right: none; }
+  .stat-num { font-size: 2rem; font-weight: 800; color: var(--green); line-height: 1; margin-bottom: 5px; }
+  .stat-label { font-size: .72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--silver); }
+
+  /* SHARED */
+  .section { padding: 90px 40px; }
+  .inner { max-width: 1040px; margin: 0 auto; }
+  .eyebrow { font-size: .68rem; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--green); display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+  .eyebrow::before { content: ''; display: block; width: 20px; height: 1.5px; background: var(--green); }
+  .s-title { font-size: 2rem; color: var(--white); line-height: 1.2; margin-bottom: 16px; letter-spacing: -.02em; }
+  .s-body { color: var(--silver); font-size: 1rem; line-height: 1.85; }
+
+  /* MISSION */
+  .mission { background: var(--deep); }
+  .mission-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+  .ein {
+    display: inline-flex; align-items: center; gap: 9px; margin-top: 24px;
+    background: rgba(74,222,128,.08); border: 1px solid rgba(74,222,128,.2);
+    border-radius: 8px; padding: 11px 16px; font-size: .8rem; color: var(--greenl);
+  }
+  .charities { display: flex; flex-direction: column; gap: 12px; }
+  .charity {
+    display: flex; align-items: center; gap: 14px;
+    background: var(--glass); border: 1px solid var(--border);
+    border-radius: 11px; padding: 16px 18px;
+    transition: background .15s, border-color .15s;
+  }
+  .charity:hover { background: var(--glassh); border-color: rgba(74,222,128,.35); }
+  .charity-ic { font-size: 1.4rem; }
+  .cn { font-size: .9rem; font-weight: 700; color: var(--white); }
+  .cd { font-size: .74rem; color: var(--silver); margin-top: 2px; }
+
+  /* POSTS */
+  .posts { background: var(--night); }
+  .posts-head { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 36px; flex-wrap: wrap; gap: 12px; }
+  .posts-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 22px; }
+  .card { background: var(--deep); border: 1px solid var(--border); border-radius: 13px; overflow: hidden; display: flex; flex-direction: column; transition: transform .2s, box-shadow .2s, border-color .2s; }
+  .card:hover { transform: translateY(-5px); box-shadow: 0 16px 48px rgba(0,0,0,.45); border-color: rgba(74,222,128,.3); }
+  .card-img { height: 190px; overflow: hidden; background: var(--navy); display: flex; align-items: center; justify-content: center; font-size: 2.5rem; flex-shrink: 0; }
+  .card-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .4s; }
+  .card:hover .card-img img { transform: scale(1.06); }
+  .card-body { padding: 22px; flex: 1; display: flex; flex-direction: column; }
+  .card-date { font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .8px; color: var(--green); margin-bottom: 8px; }
+  .card-title { font-size: 1rem; color: var(--white); line-height: 1.4; margin-bottom: 10px; }
+  .card-text { font-size: .875rem; color: var(--silver); line-height: 1.65; flex: 1; }
+  .card-link { display: inline-flex; align-items: center; gap: 5px; margin-top: 16px; font-size: .78rem; font-weight: 700; color: var(--green); text-decoration: none; transition: gap .15s; }
+  .card-link:hover { gap: 9px; }
+
+  /* DONATE */
+  .donate { background: var(--deep); }
+  .donate-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center; }
+  .donate-body { color: var(--silver); font-size: 1rem; line-height: 1.85; }
+  .donate-body p + p { margin-top: 14px; }
+  .donate-card {
+    border-radius: 16px; padding: 36px; position: relative; overflow: hidden;
+    background: linear-gradient(145deg, #0c1f0e 0%, #0a1a0c 100%);
+    border: 1px solid rgba(74,222,128,.2);
+    box-shadow: 0 0 60px rgba(74,222,128,.07), inset 0 1px 0 rgba(255,255,255,.06);
+  }
+  .donate-card::before {
+    content: ''; position: absolute; top: -60px; right: -60px;
+    width: 200px; height: 200px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(74,222,128,.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .dc-label { font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--green); margin-bottom: 14px; }
+  .amounts { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin: 20px 0; }
+  .ab { background: var(--glass); border: 1px solid var(--border); color: var(--silver); border-radius: 8px; padding: 10px 6px; font-size: .85rem; font-weight: 700; cursor: pointer; text-align: center; transition: all .15s; }
+  .ab:hover, .ab.on { background: var(--red); border-color: var(--red); color: var(--white); }
+  .venmo { display: flex; align-items: center; justify-content: center; gap: 8px; background: var(--red); color: var(--white); border-radius: 10px; padding: 14px 24px; font-weight: 800; font-size: .9rem; text-decoration: none; width: 100%; margin-top: 6px; transition: background .15s; }
+  .venmo:hover { background: var(--redl); }
+  .food-note { margin-top: 13px; background: var(--glass); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; font-size: .77rem; color: var(--silver); }
+  .tax { text-align: center; font-size: .7rem; color: #4a6a4a; margin-top: 10px; }
+
+  /* CONNECT */
+  .connect { background: var(--night); }
+  .connect-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: start; }
+  .contact-block { display: flex; flex-direction: column; gap: 16px; margin-top: 8px; }
+  .contact-item h4 { font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--green); margin-bottom: 5px; }
+  .contact-item a, .contact-item p { color: var(--silver); text-decoration: none; font-size: .93rem; transition: color .15s; }
+  .contact-item a:hover { color: var(--white); }
+  .socials { display: flex; flex-direction: column; gap: 10px; margin-top: 8px; }
+  .slink { display: flex; align-items: center; gap: 13px; background: var(--glass); border: 1px solid var(--border); border-radius: 10px; padding: 13px 16px; text-decoration: none; transition: background .15s, border-color .15s; }
+  .slink:hover { background: var(--glassh); border-color: rgba(74,222,128,.3); }
+  .slink-icon { font-size: 1.1rem; }
+  .slink-name { font-size: .85rem; font-weight: 600; color: var(--white); }
+  .slink-handle { font-size: .72rem; color: var(--silver); }
+  .slink-arr { margin-left: auto; color: #4a6a4a; font-size: .75rem; }
+
+  /* FOOTER */
+  footer { background: #030d03; border-top: 1px solid var(--border); padding: 28px 40px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px; }
+  .fl { font-size: .82rem; font-weight: 700; color: #2d5a2d; }
+  .fc { font-size: .73rem; color: #1e3a1e; }
+  .flinks { display: flex; gap: 20px; }
+  .flinks a { font-size: .73rem; color: #2d5a2d; text-decoration: none; transition: color .15s; }
+  .flinks a:hover { color: var(--silver); }
+
+  /* ADMIN */
+  .fab { position: fixed; bottom: 24px; right: 24px; z-index: 300; display: flex; align-items: center; gap: 8px; background: var(--red); color: var(--white); border: none; border-radius: 10px; padding: 11px 18px; font-weight: 700; font-size: .83rem; cursor: pointer; box-shadow: 0 6px 24px rgba(220,38,38,.35); transition: background .15s; }
+  .fab:hover { background: var(--redl); }
+  .overlay { display: none; position: fixed; inset: 0; z-index: 400; background: rgba(3,8,3,.85); backdrop-filter: blur(10px); align-items: center; justify-content: center; }
+  .overlay.open { display: flex; }
+  .drawer { background: var(--deep); border: 1px solid var(--border); border-radius: 16px; padding: 36px; width: 90%; max-width: 500px; max-height: 92vh; overflow-y: auto; box-shadow: 0 32px 80px rgba(0,0,0,.6); }
+  .drawer h3 { font-size: 1.1rem; color: var(--white); margin-bottom: 4px; }
+  .drawer > p { font-size: .78rem; color: var(--silver); margin-bottom: 22px; }
+  .field { margin-bottom: 14px; }
+  .field label { display: block; font-size: .7rem; font-weight: 700; color: var(--silver); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 5px; }
+  .field input, .field textarea { width: 100%; background: rgba(255,255,255,.05); border: 1px solid var(--border); border-radius: 7px; padding: 9px 12px; font-size: .92rem; color: var(--white); resize: vertical; transition: border-color .15s; font-family: system-ui, sans-serif; }
+  .field input::placeholder, .field textarea::placeholder { color: #4a6a4a; }
+  .field input:focus, .field textarea:focus { outline: none; border-color: var(--green); }
+  .drawer-btns { display: flex; gap: 10px; margin-top: 20px; }
+  .btn-pub { background: var(--red); color: var(--white); flex: 1; font-weight: 800; border: none; border-radius: 9px; padding: 13px 24px; cursor: pointer; font-size: .88rem; transition: background .15s; }
+  .btn-pub:hover { background: var(--redl); }
+  .btn-cancel { background: var(--glass); color: var(--silver); border: 1px solid var(--border); border-radius: 9px; padding: 13px 24px; cursor: pointer; font-size: .88rem; font-weight: 700; transition: background .15s; }
+  .success { background: rgba(74,222,128,.1); border: 1px solid rgba(74,222,128,.3); color: var(--greenl); border-radius: 7px; padding: 10px 14px; font-size: .82rem; margin-bottom: 14px; display: none; }
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="#" class="logo">
+    <div class="logo-mark">&#128161;</div>
+    <span class="logo-text">Rockmont Lights</span>
+  </a>
+  <ul>
+    <li><a href="#mission">About</a></li>
+    <li><a href="#posts">Posts</a></li>
+    <li><a href="#donate">Donate</a></li>
+    <li><a href="#connect">Connect</a></li>
+    <li><a href="https://account.venmo.com/u/rockmontlights" class="nav-cta" target="_blank">Give Now &#8599;</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-badge">Sacramento, CA &#183; 501(c)(3) Nonprofit</div>
+    <h1>Enjoy the lights.<br><em>Give back.</em></h1>
+    <p class="hero-sub">We are neighbors who decorate for the holidays and direct every donation to local food banks and charities serving Sacramento.</p>
+    <div class="hero-actions">
+      <a href="https://account.venmo.com/u/rockmontlights" class="btn btn-red" target="_blank">Donate via Venmo</a>
+      <a href="#mission" class="btn btn-ghost">Learn More</a>
+    </div>
+  </div>
+</section>
+
+<div class="stats-row" id="statsRow"></div>
+
+<section class="section mission" id="mission">
+  <div class="inner mission-grid">
+    <div>
+      <div class="eyebrow">Our Mission</div>
+      <h2 class="s-title">Neighbors lighting up Sacramento</h2>
+      <p class="s-body" id="missionBody"></p>
+      <div class="ein">&#127963; &nbsp;EIN 88-4203745 &#183; Donations are tax-deductible</div>
+    </div>
+    <div>
+      <div class="eyebrow" style="margin-bottom:16px">Supported Charities</div>
+      <div class="charities" id="charities"></div>
+    </div>
+  </div>
+</section>
+
+<section class="section posts" id="posts">
+  <div class="inner">
+    <div class="posts-head">
+      <div>
+        <div class="eyebrow">Updates</div>
+        <h2 class="s-title" style="margin-bottom:0">Latest from Rockmont</h2>
+      </div>
+    </div>
+    <div class="posts-grid" id="postsGrid"></div>
+  </div>
+</section>
+
+<section class="section donate" id="donate">
+  <div class="inner donate-grid">
+    <div>
+      <div class="eyebrow">Give Back</div>
+      <h2 class="s-title">100% of donations reach families in need</h2>
+      <div class="donate-body">
+        <p>All monetary donations go directly to local nonprofit organizations with no overhead and no middlemen. Every dollar reaches Sacramento families.</p>
+        <p>Drop off non-perishable food at the barrel on Java Ct. during the holiday season. Lights go up after Thanksgiving through New Year's Eve.</p>
+      </div>
+    </div>
+    <div class="donate-card">
+      <div class="dc-label">Make a Donation</div>
+      <p style="color:var(--silver);font-size:.83rem;line-height:1.6;">Select an amount or donate any amount via Venmo.</p>
+      <div class="amounts" id="amounts"></div>
+      <a href="https://account.venmo.com/u/rockmontlights" class="venmo" target="_blank">&#128153; &nbsp;Donate on Venmo</a>
+      <div class="food-note">&#129386; &nbsp;Also accepting non-perishable food items on Java Ct.</div>
+      <p class="tax">501(c)(3) &#183; EIN 88-4203745 &#183; Tax-deductible</p>
+    </div>
+  </div>
+</section>
+
+<section class="section connect" id="connect">
+  <div class="inner connect-grid">
+    <div>
+      <div class="eyebrow">Get in Touch</div>
+      <h2 class="s-title">Connect with Rockmont</h2>
+      <div class="contact-block" id="contactBlock"></div>
+    </div>
+    <div>
+      <div class="eyebrow" style="margin-bottom:16px">Follow Us</div>
+      <div class="socials" id="socials"></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span class="fl">&#128161; Rockmont Lights</span>
+  <span class="fc" id="footerCopy"></span>
+  <div class="flinks">
+    <a href="mailto:info@rockmontlights.com">Contact</a>
+    <a href="https://account.venmo.com/u/rockmontlights" target="_blank">Donate</a>
+  </div>
+</footer>
+
+<button class="fab" onclick="openAdmin()">&#9998; &nbsp;New Post</button>
+
+<div class="overlay" id="overlay">
+  <div class="drawer">
+    <h3>Publish a Post</h3>
+    <p>In production this writes to your content.json and triggers a redeploy.</p>
+    <div class="success" id="successMsg">Post added to the grid.</div>
+    <div class="field"><label>Title</label><input type="text" id="pTitle" placeholder="Holiday Lights 2025"></div>
+    <div class="field"><label>Date</label><input type="text" id="pDate" placeholder="Dec 1, 2025"></div>
+    <div class="field"><label>Excerpt</label><textarea id="pExcerpt" rows="3" placeholder="Short summary..."></textarea></div>
+    <div class="field"><label>Image URL (optional)</label><input type="text" id="pImage" placeholder="https://..."></div>
+    <div class="field"><label>Link URL (optional)</label><input type="text" id="pLink" placeholder="https://..."></div>
+    <div class="drawer-btns">
+      <button class="btn-pub" onclick="publishPost()">Publish</button>
+      <button class="btn-cancel" onclick="closeAdmin()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script>
+var D = {
+  stats: [
+    { num: "100+", label: "Homes Participating" },
+    { num: "Millions", label: "of Lights" },
+    { num: "1,000s", label: "Annual Visitors" },
+    { num: "3+", label: "Charities Supported" }
+  ],
+  mission: "We are neighbors who like decorating for the holidays. We collect non-perishable food items and monetary donations for local food banks and charitable organizations. Donations go directly to local nonprofit organizations. Lights go up the day after Thanksgiving and remain through New Years Eve, weather permitting.",
+  charities: [
+    { ic: "&#127838;", name: "Joey's Food Locker", desc: "Local food pantry" },
+    { ic: "&#129309;", name: "Angels of Mercy", desc: "Community support services" },
+    { ic: "&#129386;", name: "Sacramento Food Bank", desc: "Regional food security" }
+  ],
+  amounts: ["$10", "$25", "$50", "$100", "$250", "Other"],
+  social: [
+    { ic: "&#128248;", name: "Facebook", handle: "@RockmontLights", url: "https://www.facebook.com/people/Rockmont-Lights/100086717054448/" },
+    { ic: "&#128247;", name: "Instagram", handle: "@rockmontlights", url: "https://www.instagram.com/rockmontlights/" },
+    { ic: "&#128038;", name: "Twitter / X", handle: "@rockmontlights", url: "https://twitter.com/rockmontlights" },
+    { ic: "&#9654;", name: "YouTube", handle: "Rockmont Lights", url: "https://www.youtube.com/channel/UCTLVlbiNCzbjnQ7W8wwqZtA" }
+  ],
+  posts: [
+    { title: "Rockmont Alive with the Sound of Music", date: "Dec 24, 2024", excerpt: "This year the display featured a stunning musical light show synchronized to holiday classics, drawing hundreds of visitors to Java Court.", image: "https://www.rockmontlights.com/wp-content/uploads/2024/12/IMG_1202-scaled.jpg", link: "https://www.rockmontlights.com/rockmont-alive-with-the-sound-of-music/" },
+    { title: "These Neighborhoods Bring Out The Best In Holiday Lights", date: "Dec 7, 2024", excerpt: "Sacramento top holiday light destinations for 2024 and Rockmont is at the top of the list.", image: "https://www.rockmontlights.com/wp-content/uploads/2024/12/IMG_3568-scaled.jpg", link: "https://www.rockmontlights.com/these-neighborhoods-bring-out-the-best-in-holiday-lights/" },
+    { title: "Holiday Lights 2024", date: "Dec 1, 2024", excerpt: "The 2024 season is officially underway. Lights went up the day after Thanksgiving across 100+ homes on and around Java Court.", image: "https://www.rockmontlights.com/wp-content/uploads/2024/12/6-scaled.jpg", link: "https://www.rockmontlights.com/holiday-lights-2024/" }
+  ]
+};
+
+window.addEventListener("scroll", function() {
+  document.getElementById("nav").classList.toggle("scrolled", window.scrollY > 60);
+});
+
+document.getElementById("statsRow").innerHTML = D.stats.map(function(s) {
+  return "<div class=\"stat\"><div class=\"stat-num\">" + s.num + "</div><div class=\"stat-label\">" + s.label + "</div></div>";
+}).join("");
+
+document.getElementById("missionBody").textContent = D.mission;
+
+document.getElementById("charities").innerHTML = D.charities.map(function(c) {
+  return "<div class=\"charity\"><span class=\"charity-ic\">" + c.ic + "</span><div><div class=\"cn\">" + c.name + "</div><div class=\"cd\">" + c.desc + "</div></div></div>";
+}).join("");
+
+document.getElementById("amounts").innerHTML = D.amounts.map(function(a) {
+  return "<div class=\"ab\" onclick=\"this.classList.toggle('on')\">" + a + "</div>";
+}).join("");
+
+document.getElementById("socials").innerHTML = D.social.map(function(s) {
+  return "<a href=\"" + s.url + "\" class=\"slink\" target=\"_blank\"><span class=\"slink-icon\">" + s.ic + "</span><div><div class=\"slink-name\">" + s.name + "</div><div class=\"slink-handle\">" + s.handle + "</div></div><span class=\"slink-arr\">&#8599;</span></a>";
+}).join("");
+
+document.getElementById("contactBlock").innerHTML =
+  "<div class=\"contact-item\"><h4>Email</h4><a href=\"mailto:info@rockmontlights.com\">info@rockmontlights.com</a></div>" +
+  "<div class=\"contact-item\"><h4>Location</h4><p>Java Ct, Sacramento, CA 95835</p></div>" +
+  "<div class=\"contact-item\"><h4>Season</h4><p>Thanksgiving through New Years Eve</p></div>";
+
+document.getElementById("footerCopy").textContent = "© " + new Date().getFullYear() + " Rockmont Lights · Sacramento, CA · 501(c)(3) · EIN 88-4203745";
+
+function renderPosts() {
+  document.getElementById("postsGrid").innerHTML = D.posts.map(function(p) {
+    return "<div class=\"card\"><div class=\"card-img\">" +
+      (p.image ? "<img src=\"" + p.image + "\" alt=\"\" onerror=\"this.parentElement.innerHTML='&#127876;'\">" : "&#127876;") +
+      "</div><div class=\"card-body\"><div class=\"card-date\">" + p.date + "</div><div class=\"card-title\">" + p.title + "</div><div class=\"card-text\">" + p.excerpt + "</div>" +
+      (p.link ? "<a href=\"" + p.link + "\" class=\"card-link\" target=\"_blank\">Read more &#8594;</a>" : "") +
+      "</div></div>";
+  }).join("");
+}
+renderPosts();
+
+function openAdmin() { document.getElementById("overlay").classList.add("open"); }
+function closeAdmin() {
+  document.getElementById("overlay").classList.remove("open");
+  document.getElementById("successMsg").style.display = "none";
+}
+function publishPost() {
+  var t = document.getElementById("pTitle").value.trim();
+  var d = document.getElementById("pDate").value.trim();
+  var e = document.getElementById("pExcerpt").value.trim();
+  var i = document.getElementById("pImage").value.trim();
+  var l = document.getElementById("pLink").value.trim();
+  if (!t || !d || !e) { alert("Title, date, and excerpt are required."); return; }
+  D.posts.unshift({ title: t, date: d, excerpt: e, image: i || null, link: l || null });
+  renderPosts();
+  document.getElementById("successMsg").style.display = "block";
+  ["pTitle","pDate","pExcerpt","pImage","pLink"].forEach(function(id) { document.getElementById(id).value = ""; });
+}
+document.getElementById("overlay").addEventListener("click", function(e) {
+  if (e.target === document.getElementById("overlay")) closeAdmin();
+});
+</script>
+</body>
+</html>
